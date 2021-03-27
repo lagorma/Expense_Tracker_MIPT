@@ -2,6 +2,7 @@ from datetime import datetime
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from app import login
 
 class User(UserMixin,db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -29,3 +30,6 @@ class Expense(db.Model):
     def __repr__(self):
         return '<Category {}, Expense {}>'.format(self.category,self.body)
 
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
