@@ -10,6 +10,9 @@ from werkzeug.urls import url_parse
 from app import db
 from app.forms import RegistrationForm
 from app.forms import EditProfileForm
+from app.models import Expense
+from app.forms  import AddExpenseForm
+from datetime import datetime
 
 @app.route('/')
 @app.route('/index')
@@ -79,13 +82,13 @@ def user(username):
     if user == current_user:
         return render_template('user.html', user = user, expenses = expenses)
     else:
-        raise SyntaxError('You have no access to this profile')
+        raise ValidationError('You have no access to this profile')
     
 
 @app.route('/edit_profile', methods =['GET','POST'])
 @login_required
 def edit_profile():
-    form = EditProfileForm()
+    form = EditProfileForm(current_user.username)
     if form.validate_on_submit():
         current_user.username = form.username.data
         db.session.commit()
@@ -94,6 +97,23 @@ def edit_profile():
     elif request.method == 'GET':
         form.username.data = current_user.username
     return render_template('edit_profile.html', title = 'Edit Profile', form = form)
+
+
+@app.route('/add_expense', methods =['GET','POST'])
+@login_required
+def add_expense():
+    form = AddExpenseForm()
+    user = User(username=current_user.username)
+    username = user.username
+    if form.validate_on_submit():
+        expense = Expense(category=form.category.data, body=form.body.data, timestamp = form.timestamp.data, user_id = user.id)
+        db.session.add(expense)
+        db.session.commit()
+        flash('You have successfully added new expenses!')
+        return redirect(url_for('index'))
+    elif request.method == 'GET':
+        form.timestamp.data = datetime.now() 
+    return render_template('add_expense.html', title = 'Add Expense', form = form)
 
 
 
