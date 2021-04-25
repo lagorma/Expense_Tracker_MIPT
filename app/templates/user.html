@@ -16,10 +16,12 @@
 		</table>
 		<hr>
 		<p><a href="{{ url_for('add_expense') }}">Add Expenses</a></p>
-		<hr>
+		</hr>
+		<p><a href="{{ url_for('history') }}">History</a></p>
+		</hr>
         	{% for expense in expenses %}
 		<p>
-        	The amount of money spent on {{expense.category}} is<b> {{expense.summa}}.
+        	The amount of money spent on {{expense.category}} is<b> {{expense.body}}.
 		</p>
         	{% endfor %}
 	{% endblock %}

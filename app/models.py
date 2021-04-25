@@ -25,6 +25,10 @@ class User(UserMixin,db.Model):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
 
+    def expense(self):
+        return Expense.query.order_by(Expense.timestamp.desc())
+
+
 class Expense(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     category = db.Column(db.String(64), index = True)
