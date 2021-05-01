@@ -1,0 +1,4 @@
+{
+    "python.pythonPath": "/home/barklan/dev/Expense_Tracker_2Days/web/env/bin/python3.9",
+    "python.analysis.extraPaths": ["web/"]
+}

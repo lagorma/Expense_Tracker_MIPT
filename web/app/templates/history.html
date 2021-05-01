@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+{% for expense in expenses %}
+<hr>
+{{expense.timestamp}}
+<p>
+The amount of money spent on {{expense.category}} is {{expense.body}}.
+</p>
+</hr>
+{% endfor %}
+{% if prev_url %}
+<a href="{{ prev_url }}">Newer expenses</a>
+{% endif %}
+{% if next_url %}
+<a href="{{ next_url }}">Older expenses</a>
+{% endif %}
+{% endblock %}            
