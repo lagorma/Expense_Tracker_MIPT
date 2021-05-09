@@ -112,7 +112,8 @@ def add_expense():
 def history():
     user = User(username=current_user.username)
     page = request.args.get("page", 1, type=int)
-    expenses = user.expense().paginate(page, app.config["EXPENSES_PER_PAGE"], False)
+    expenses = Expense.query.filter_by(user_id=user.id)
+    expenses = expenses.paginate(page, app.config["EXPENSES_PER_PAGE"], False)
     next_url = url_for("history", page=expenses.next_num) if expenses.has_next else None
     prev_url = url_for("history", page=expenses.prev_num) if expenses.has_prev else None
     return render_template("history.html", user=user, expenses=expenses.items, next_url=next_url, prev_url=prev_url)
