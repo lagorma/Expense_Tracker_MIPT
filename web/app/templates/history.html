@@ -1,7 +1,8 @@
 {% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
 
-{% block content %}
+{% block app_content %}
 {% for expense in expenses %}
 <hr>
 {{expense.timestamp}}
@@ -10,10 +11,18 @@ The amount of money spent on {{expense.category}} is {{expense.body}}.
 </p>
 </hr>
 {% endfor %}
-{% if prev_url %}
-<a href="{{ prev_url }}">Newer expenses</a>
-{% endif %}
-{% if next_url %}
-<a href="{{ next_url }}">Older expenses</a>
-{% endif %}
+<nav aria-label="...">
+        <ul class="pager">
+            <li class="previous{% if not prev_url %} disabled{% endif %}">
+                <a href="{{ prev_url or '#' }}">
+                    <span aria-hidden="true">&larr;</span> Newer expenses
+                </a>
+            </li>
+            <li class="next{% if not next_url %} disabled{% endif %}">
+                <a href="{{ next_url or '#' }}">
+                    Older expenses <span aria-hidden="true">&rarr;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 {% endblock %}            
