@@ -6,7 +6,8 @@ from app import login
 from hashlib import md5
 from time import time
 import jwt
-from app import app
+from flask import current_app
+#from app import app
 
 class User(UserMixin,db.Model):
     id = db.Column(db.Integer, primary_key = True)
