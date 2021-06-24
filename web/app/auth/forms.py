@@ -5,6 +5,7 @@ from app.models import User
 
 
 class LoginForm(FlaskForm):
+    """a form for logging in an existing user"""
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
@@ -12,6 +13,7 @@ class LoginForm(FlaskForm):
 
 
 class RegistrationForm(FlaskForm):
+    """form for registering a new user"""
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -21,22 +23,26 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Register')
 
     def validate_username(self, username):
+        """the function of checking for a match of the username"""
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
             raise ValidationError('Please use a different username.')
 
     def validate_email(self, email):
+        """the function of checking for a match of the username"""
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
 
 
 class ResetPasswordRequestForm(FlaskForm):
+    """the form allows you to reset the password from an existing account"""
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Request Password Reset')
 
 
 class ResetPasswordForm(FlaskForm):
+    """The form allows you to reset your password when logging in"""
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         ('Repeat Password'), validators=[DataRequired(),

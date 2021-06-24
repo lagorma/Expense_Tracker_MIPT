@@ -17,6 +17,7 @@ from app.main import bp
 @bp.route('/index')
 @login_required
 def index():
+    """creating a form and processing it in the view function"""
     expenses = [ 
         {
             'category': 'products',
@@ -36,6 +37,7 @@ def index():
 @bp.route('/user/<username>')
 @login_required
 def user(username):
+    """the view function that will be displayed in the/user / <user name> URL"""
     user = User.query.filter_by(username = username).first_or_404()
     expenses = Expense.query.filter_by(user_id = user.id)
     #expenses = user.expense().all()
@@ -48,6 +50,7 @@ def user(username):
 @bp.route('/edit_profile', methods =['GET','POST'])
 @login_required
 def edit_profile():
+    """the function allows you to edit the profile"""
     form = EditProfileForm(current_user.username)
     if form.validate_on_submit():
         current_user.username = form.username.data
@@ -62,6 +65,7 @@ def edit_profile():
 @bp.route('/add_expense', methods =['GET','POST'])
 @login_required
 def add_expense():
+    """the function allows you to add expenses"""
     form = AddExpenseForm()
     #user = User(username=current_user.username)
     #username = user.username
@@ -78,6 +82,7 @@ def add_expense():
 @bp.route('/history')
 @login_required
 def history():
+    """the function allows you to find out the history of spending"""
     user = User(username=current_user.username)
     page = request.args.get('page', 1, type=int)
     expenses = Expense.query.filter_by(user_id = current_user.id)

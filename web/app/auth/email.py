@@ -3,6 +3,7 @@ from app.email import send_email
 
 
 def send_password_reset_email(user):
+    """the function sends an email to your email address if you need to reset your password"""
     token = user.get_reset_password_token()
     send_email('[Microblog] Reset Your Password',
                sender=current_app.config['ADMINS'][0],
