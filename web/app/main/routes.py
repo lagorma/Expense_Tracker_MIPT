@@ -11,13 +11,13 @@ from app.models import Expense
 from app.main.forms  import AddExpenseForm
 from datetime import datetime
 from app.main import bp
+from app.main.analyse import analyse,exponential_smoothing
 
 
 @bp.route('/')
 @bp.route('/index')
 @login_required
 def index():
-    """creating a form and processing it in the view function"""
     expenses = [ 
         {
             'category': 'products',
@@ -37,7 +37,6 @@ def index():
 @bp.route('/user/<username>')
 @login_required
 def user(username):
-    """the view function that will be displayed in the/user / <user name> URL"""
     user = User.query.filter_by(username = username).first_or_404()
     expenses = Expense.query.filter_by(user_id = user.id)
     #expenses = user.expense().all()
@@ -50,7 +49,6 @@ def user(username):
 @bp.route('/edit_profile', methods =['GET','POST'])
 @login_required
 def edit_profile():
-    """the function allows you to edit the profile"""
     form = EditProfileForm(current_user.username)
     if form.validate_on_submit():
         current_user.username = form.username.data
@@ -65,7 +63,6 @@ def edit_profile():
 @bp.route('/add_expense', methods =['GET','POST'])
 @login_required
 def add_expense():
-    """the function allows you to add expenses"""
     form = AddExpenseForm()
     #user = User(username=current_user.username)
     #username = user.username
@@ -82,13 +79,69 @@ def add_expense():
 @bp.route('/history')
 @login_required
 def history():
-    """the function allows you to find out the history of spending"""
     user = User(username=current_user.username)
     page = request.args.get('page', 1, type=int)
     expenses = Expense.query.filter_by(user_id = current_user.id)
     #expenses = expenses.paginate(page, app.config["EXPENSES_PER_PAGE"], False)
     expenses = expenses.order_by(Expense.timestamp.desc())
+    #expense_first = expenses[-1]
+    #expense_last = expenses[0]
+    #first_time = expense_first.timestamp
+    #print(type(first_time))  #class datetime.datetime
+    #first_time_year = first_time.year
+    #first_time_month = first_time.month
+    #first_time = "first_time_month"+'-'+"first_time_year"
+    #print(first_time)
+    #last_time = expense_last.timestamp
+    #last_time_year = last_time.year
+    #last_time_month = last_time.month
+    #a = {}
+    #t = 0
+    #first_expense=expenses[0]
+    #a[first_expense.export_date()]=int(first_expense.body)
+    #for expense in expenses: 
+    #    d = expense.export_date()
+    #    if d==first_expense.export_date():
+    #        t+=int(expense.body)
+    #        a[expense.export_date()] = t
+    #    else:
+    #        t = int(expense.body)
+    #        a[expense.export_date()] = t
+    #        first_expense=expense
+    #print(a)
     expenses = expenses.paginate(page, current_app.config["EXPENSES_PER_PAGE"], False)
     next_url = url_for('main.history', page = expenses.next_num) if expenses.has_next else None
     prev_url = url_for('main.history', page = expenses.prev_num) if expenses.has_prev else None
     return render_template('history.html', user = user, expenses = expenses.items, next_url = next_url, prev_url = prev_url)
+
+
+@bp.route('/analysis')
+@login_required
+def analysis():
+    user=User(username=current_user.username)
+    expenses = Expense.query.filter_by(user_id = current_user.id)
+    expenses = expenses.order_by(Expense.timestamp.desc())
+    a = {}
+    t = 0
+    first_expense=expenses[0]
+    a[first_expense.export_date()]=int(first_expense.body)
+    for expense in expenses:
+        d = expense.export_date()
+        if d==first_expense.export_date():
+            t+=int(expense.body)
+            a[expense.export_date()] = t
+        else:
+            t = int(expense.body)
+            a[expense.export_date()] = t
+            first_expense=expense
+    total_amount = analyse(a,exponential_smoothing)
+    return render_template('analysis.html', user=user, total_amount=total_amount )
+#    print(a)
+#    expense_first = expenses[-1]
+#    expense_last = expenses[0]
+#    first_time = expense_first.timestamp
+#    last_time = expense_last.timestamp
+#    timestamps = [expenses.timestamp.all()]
+#    print(timestamps)
+#    analyse(data)
+#    return render_template('analysis.html', user=user)
