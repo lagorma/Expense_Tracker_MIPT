@@ -1,6 +1,7 @@
 from flask.cli import FlaskGroup
 
-from app import app, db
+from app import db
+from microblog import app
 from app.models import User
 
 
