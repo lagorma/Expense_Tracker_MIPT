@@ -10,7 +10,6 @@ from flask import current_app
 #from app import app
 
 class User(UserMixin,db.Model):
-    """generates avatar URLs for the user model"""
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(64), index = True, unique = True)
     email = db.Column(db.String(120), index = True, unique = True)
@@ -34,9 +33,14 @@ class User(UserMixin,db.Model):
         #return Expense.query.order_by(Expense.timestamp.desc())
 
     def get_reset_password_token(self, expires_in=600):
-        return jwt.encode(
+        a = jwt.encode(
             {'reset_password': self.id, 'exp': time() + expires_in},
-            app.config['SECRET_KEY'], algorithm='HS256')
+            current_app.config['SECRET_KEY'], algorithm='HS256')
+        #return jwt.encode(
+            #{'reset_password': self.id, 'exp': time() + expires_in},
+            #current_app.config['SECRET_KEY'], algorithm='HS256')
+        return a
+
 
     @staticmethod
     def verify_reset_password_token(token):
@@ -49,7 +53,6 @@ class User(UserMixin,db.Model):
 
 
 class Expense(db.Model):
-    """generates finance for a specific user"""
     id = db.Column(db.Integer, primary_key = True)
     category = db.Column(db.String(64), index = True)
     body = db.Column(db.String(140))
@@ -59,7 +62,10 @@ class Expense(db.Model):
     def __repr__(self):
         return '<Category {}, Expense {}>'.format(self.category,self.body)
 
+    def export_date(self):
+        return str(self.timestamp.month)+'-'+str(self.timestamp.year)
+
+
 @login.user_loader
 def load_user(id):
-    """function for uploading a user with an id"""
     return User.query.get(int(id))

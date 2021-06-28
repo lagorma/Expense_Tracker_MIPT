@@ -1,1 +1,3 @@
-# Expense_Tracker_MIPT
+# Expense_Tracker_2Days
+
+`docker-compose up --build`
