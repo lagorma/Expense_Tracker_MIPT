@@ -123,18 +123,21 @@ def analysis():
     expenses = expenses.order_by(Expense.timestamp.desc())
     a = {}
     t = 0
-    first_expense=expenses[0]
-    a[first_expense.export_date()]=int(first_expense.body)
-    for expense in expenses:
-        d = expense.export_date()
-        if d==first_expense.export_date():
-            t+=int(expense.body)
-            a[expense.export_date()] = t
-        else:
-            t = int(expense.body)
-            a[expense.export_date()] = t
-            first_expense=expense
-    total_amount = analyse(a,exponential_smoothing)
+    if expenses[0]:
+        first_expense=expenses[0]
+        a[first_expense.export_date()]=int(first_expense.body)
+        for expense in expenses:
+            d = expense.export_date()
+            if d==first_expense.export_date():
+                t+=int(expense.body)
+                a[expense.export_date()] = t
+            else:
+                t = int(expense.body)
+                a[expense.export_date()] = t
+                first_expense=expense
+        total_amount = analyse(a,exponential_smoothing)
+    else:
+        total_amount = 0
     return render_template('analysis.html', user=user, total_amount=total_amount )
 #    print(a)
 #    expense_first = expenses[-1]

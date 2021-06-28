@@ -2,8 +2,6 @@
 
 {% block app_content %}
 		<h1>Hello, {{ current_user.username }}!</h1>
-		{% for expense in expenses %}
-		<div><p>The amount of money spent on {{expense.category}} is<b> {{expense.body}}.</b><p></div>
-		{% endfor %}
-
+		<div><p> We are Expense Tracker!</p></div>
+		<div><p> Our aim is to help you manage your expenses</p></div>
 {% endblock %}
