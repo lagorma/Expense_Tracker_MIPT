@@ -13,10 +13,15 @@ from math import sqrt
 
 
 def exponential_smoothing(panda_series, alpha):
+    """ Function of single exponential smoothing
+    alpha - parameter
+    panda_series - known data
+    """
     output = sum([alpha*(1-alpha) ** i *x for i,x in enumerate(panda_series)])
     return output
 
 def analyse(a, exponential_smoothing):
+    """ Function which allows to analyse expenses using exponential smoothing"""
     (pd.DataFrame.from_dict(data=a, orient='index')
         .to_csv('expenses.csv', header=1))
     df = read_csv('expenses.csv')
@@ -25,7 +30,7 @@ def analyse(a, exponential_smoothing):
     dataset = pd.read_csv('expenses.csv', index_col=['Time'])
     panda_series = dataset.Expenses
     smoothing_number = exponential_smoothing(panda_series, 0.6)
-    #testdata=dataset[:-1]
+    #testdata=dataset[:-1]          
     #estimated_values=testdata.copy()
     #estimated_values['SES']=smoothing_number
     #error=sqrt(mean_squared_error(testdata.Expenses, estimated_values.SES))
