@@ -25,10 +25,10 @@ def analyse(a, exponential_smoothing):
     dataset = pd.read_csv('expenses.csv', index_col=['Time'])
     panda_series = dataset.Expenses
     smoothing_number = exponential_smoothing(panda_series, 0.6)
-    testdata=dataset[:-1]
-    estimated_values=testdata.copy()
-    estimated_values['SES']=smoothing_number
-    error=sqrt(mean_squared_error(testdata.Expenses, estimated_values.SES))
+    #testdata=dataset[:-1]
+    #estimated_values=testdata.copy()
+    #estimated_values['SES']=smoothing_number
+    #error=sqrt(mean_squared_error(testdata.Expenses, estimated_values.SES))
     #print(error)
     return round(smoothing_number)
 
