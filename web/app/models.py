@@ -7,7 +7,6 @@ from hashlib import md5
 from time import time
 import jwt
 from flask import current_app
-#from app import app
 
 class User(UserMixin,db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -33,17 +32,13 @@ class User(UserMixin,db.Model):
         #return Expense.query.order_by(Expense.timestamp.desc())
 
     def get_reset_password_token(self, expires_in=600):
-        a = jwt.encode(
+        return jwt.encode(
             {'reset_password': self.id, 'exp': time() + expires_in},
             current_app.config['SECRET_KEY'], algorithm='HS256')
-        #return jwt.encode(
-            #{'reset_password': self.id, 'exp': time() + expires_in},
-            #current_app.config['SECRET_KEY'], algorithm='HS256')
-        return a
 
 
     @staticmethod
-    def verify_reset_password_token(token):
+    def verify_reset_password_token(app, token):
         try:
             id = jwt.decode(token, app.config['SECRET_KEY'],
                             algorithms=['HS256'])['reset_password']
