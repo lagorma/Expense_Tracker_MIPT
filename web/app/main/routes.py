@@ -19,7 +19,11 @@ from app.main.analyse import analyse,exponential_smoothing
 @login_required
 def index():
 <<<<<<< HEAD
+<<<<<<< HEAD
     """ Function to access home page"""
+=======
+    """Function provides to home page"""
+>>>>>>> dev1
 =======
     """Function provides to home page"""
 >>>>>>> dev1
@@ -43,7 +47,11 @@ def index():
 @login_required
 def user(username):
 <<<<<<< HEAD
+<<<<<<< HEAD
     """ Function to access home page"""
+=======
+    """ Function allows to access profile page """
+>>>>>>> dev1
 =======
     """ Function allows to access profile page """
 >>>>>>> dev1
