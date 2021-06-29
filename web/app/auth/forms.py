@@ -50,6 +50,7 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
+<<<<<<< HEAD
 
 
 #    def check_password(password):
@@ -78,6 +79,21 @@ class RegistrationForm(FlaskForm):
 #        if c == 0 and b == 0 or l<6:
 #            return False
 #        return True
+=======
+    def check_password(password):
+        l = len(password)
+        c = 0
+        b = 0
+    	for el in str(password):
+    	    if el.isdigit:
+    	        c+=1
+    	    elif el.isupper:
+    	        b+=1
+    	if c == 0 or b == 0 or l<6:
+    	    return False
+    	return True
+    	        
+>>>>>>> d97c0b017de4abe23500e832a29542be8e27eafd
             
     def validate_password(self, password):
         """the function of checking for a match of the password"""
