@@ -9,7 +9,7 @@ from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from config import Config
 
-db = SQLAlchemy()
+db = SQLAlchemy() 
 migrate = Migrate()
 login = LoginManager()
 login.login_view = 'auth.login'
@@ -19,6 +19,7 @@ bootstrap = Bootstrap()
 
 
 def create_app(config_class=Config):
+    """ Function creates an application object """
     app = Flask(__name__)
     app.config.from_object(config_class)
 
@@ -70,4 +71,4 @@ def create_app(config_class=Config):
     return app
 
 
-from app import models
+from app import models  #below import to avoid circle import

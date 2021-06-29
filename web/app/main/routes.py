@@ -17,25 +17,27 @@ from app.main.analyse import analyse,exponential_smoothing
 @bp.route('/')
 @bp.route('/index')
 @login_required
+""" Function to access home page """
 def index():
-    expenses = [ 
-        {
-            'category': 'products',
-            'body': '23$'
-        },
-        {
-            'category' : 'clothes',
-            'body': '100$'
-        },
-        {
-            'category' : 'beauty products',
-            'body': '58$'
-        }
-    ]
+    #expenses = [ 
+    #    {
+    #        'category': 'products',
+    #        'body': '23$'
+    #    },
+    #    {
+    #        'category' : 'clothes',
+    #        'body': '100$'
+    #    },
+    #    {
+    #        'category' : 'beauty products',
+    #        'body': '58$'
+    #    }
+    #]
     return render_template('index.html', title = 'Home', expenses = expenses)
 
 @bp.route('/user/<username>')
 @login_required
+""" Function to access the profile page """
 def user(username):
     user = User.query.filter_by(username = username).first_or_404()
     expenses = Expense.query.filter_by(user_id = user.id)
@@ -49,6 +51,7 @@ def user(username):
 @bp.route('/edit_profile', methods =['GET','POST'])
 @login_required
 def edit_profile():
+    """ Function to access edit profile page """
     form = EditProfileForm(current_user.username)
     if form.validate_on_submit():
         current_user.username = form.username.data
@@ -63,6 +66,7 @@ def edit_profile():
 @bp.route('/add_expense', methods =['GET','POST'])
 @login_required
 def add_expense():
+    """ Function to add expense page """
     form = AddExpenseForm()
     #user = User(username=current_user.username)
     #username = user.username
@@ -79,6 +83,7 @@ def add_expense():
 @bp.route('/history')
 @login_required
 def history():
+    """ Function to access history page """
     user = User(username=current_user.username)
     page = request.args.get('page', 1, type=int)
     expenses = Expense.query.filter_by(user_id = current_user.id)
@@ -118,6 +123,7 @@ def history():
 @bp.route('/analysis')
 @login_required
 def analysis():
+    """ Function to access analyse page """
     user=User(username=current_user.username)
     expenses = Expense.query.filter_by(user_id = current_user.id)
     expenses = expenses.order_by(Expense.timestamp.desc())

@@ -48,25 +48,26 @@ import smtplib
 from email.mime.text import MIMEText
 from email.utils import formatdate
 
-FROM_ADDRESS = 'sender@gmail.com'
-MY_PASSWORD = 'password'
-TO_ADDRESS = 'receiver@test.co.jp'
-BCC = 'receiver2@test.net'
-SUBJECT = 'GmailのSMTPサーバ経由'
-BODY = 'pythonでメール送信'
+#FROM_ADDRESS = 'sender@gmail.com'
+#MY_PASSWORD = 'password'
+#TO_ADDRESS = 'receiver@test.co.jp'
+#BCC = 'receiver2@test.net'
+#SUBJECT = 'GmailのSMTPサーバ経由'
+#BODY = 'pythonでメール送信'
 
 
-def create_message(from_addr, to_addr, bcc_addrs, subject, body):
-    msg = MIMEText(body)
-    msg['Subject'] = subject
-    msg['From'] = from_addr
-    msg['To'] = to_addr
-    msg['Bcc'] = bcc_addrs
-    msg['Date'] = formatdate()
-    return msg
+#def create_message(from_addr, to_addr, bcc_addrs, subject, body):
+#    msg = MIMEText(body)
+#    msg['Subject'] = subject
+#    msg['From'] = from_addr
+#    msg['To'] = to_addr
+#    msg['Bcc'] = bcc_addrs
+#    msg['Date'] = formatdate()
+#    return msg
 
 
 def send_mail(subject, sender, recipients, text_body):
+    """ Function allows to send email if a user forgot the paswword """
     SERVER_NAME='smtp.gmail.com'
     SERVER_PORT=587
     #USER_NAME='pdara6116@gmail.com'
