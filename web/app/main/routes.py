@@ -17,28 +17,28 @@ from app.main.analyse import analyse,exponential_smoothing
 @bp.route('/')
 @bp.route('/index')
 @login_required
-""" Function to access home page """
 def index():
-    #expenses = [ 
-    #    {
-    #        'category': 'products',
-    #        'body': '23$'
-    #    },
-    #    {
-    #        'category' : 'clothes',
-    #        'body': '100$'
-    #    },
-    #    {
-    #        'category' : 'beauty products',
-    #        'body': '58$'
-    #    }
-    #]
+    """Function provides to home page"""
+    expenses = [ 
+        {
+            'category': 'products',
+            'body': '23$'
+        },
+        {
+            'category' : 'clothes',
+            'body': '100$'
+        },
+        {
+            'category' : 'beauty products',
+            'body': '58$'
+        }
+    ]
     return render_template('index.html', title = 'Home', expenses = expenses)
 
 @bp.route('/user/<username>')
 @login_required
-""" Function to access the profile page """
 def user(username):
+    """ Function allows to access profile page """
     user = User.query.filter_by(username = username).first_or_404()
     expenses = Expense.query.filter_by(user_id = user.id)
     #expenses = user.expense().all()
