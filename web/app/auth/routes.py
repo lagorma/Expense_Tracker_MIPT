@@ -10,8 +10,9 @@ from app.auth.email import send_password_reset_email
 from flask import current_app
 
 
-@bp.route('/login', methods=['GET', 'POST'])
+@bp.route('/login', methods=['GET', 'POST'])  #this decorator creates a relationship etween the URL in the argument and the function
 def login():
+    """ Function which allows a user to log in to his account """
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = LoginForm()
@@ -30,12 +31,14 @@ def login():
 
 @bp.route('/logout')
 def logout():
+    """ Function which allows the uset to log out from the account """
     logout_user()
     return redirect(url_for('main.index'))
 
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
+    """ Function which allows a user to register his account """
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = RegistrationForm()
@@ -52,6 +55,7 @@ def register():
 
 @bp.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
+    """ Function which allows a user to make a request for resetting a password if he forgot it """
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = ResetPasswordRequestForm()
@@ -68,14 +72,15 @@ def reset_password_request():
 
 @bp.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
+    """ Function which allows a user to reset his password """
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
-    user = User.verify_reset_password_token(current_app, token)
+    user = User.verify_reset_password_token(current_app, token) #finds a user in the db by token in the URL
     if not user:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.index')) 
     form = ResetPasswordForm()
     if form.validate_on_submit():
-        user.set_password(form.password.data)
+        user.set_password(form.password.data) 
         db.session.commit()
         flash('Your password has been reset.')
         return redirect(url_for('auth.login'))
