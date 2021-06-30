@@ -37,10 +37,10 @@ class RegistrationForm(FlaskForm):
         l = len(password)
         c = 0
         b = 0
-    	for el in password:
+    	for el in str(password):
     	    if el.isdigit:
     	        c+=1
-    	    if el.isupper:
+    	    elif el.isupper:
     	        b+=1
     	if c == 0 or b == 0 or l<6:
     	    return False
