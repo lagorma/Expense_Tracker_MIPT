@@ -18,7 +18,7 @@ from app.main.analyse import analyse,exponential_smoothing
 @bp.route('/index')
 @login_required
 def index():
-    """Function provides to home page"""
+    """ Function to access home page"""
     expenses = [ 
         {
             'category': 'products',
@@ -38,7 +38,7 @@ def index():
 @bp.route('/user/<username>')
 @login_required
 def user(username):
-    """ Function allows to access profile page """
+    """ Function to access home page"""
     user = User.query.filter_by(username = username).first_or_404()
     expenses = Expense.query.filter_by(user_id = user.id)
     #expenses = user.expense().all()
