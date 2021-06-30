@@ -50,71 +50,31 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
-<<<<<<< HEAD
-
-
-#    def check_password(password):
-#        l = len(password)
-#        c = 0
-#        b = 0
-#        for el in password:
-#            if el.isdigit:
-#    	        c+=1
-#    	    if el.isupper:
-#    	        b+=1
-#    	if c == 0 or b == 0 or l<6:
-#    	    return False
-#    	return True
-    	
-
-#    def check_password2(password):
-#        l=len(password)
-#        c=0
-#        d=0
-#        for el in password:
-#            if el.isdigit:
-#                c+=1
-#            if el.isupper:
-#                b+=1
-#        if c == 0 and b == 0 or l<6:
-#            return False
-#        return True
-=======
-    def check_password(password):
-        l = len(password)
-        c = 0
-        b = 0
-    	for el in str(password):
-    	    if el.isdigit:
-    	        c+=1
-    	    elif el.isupper:
-    	        b+=1
-    	if c == 0 or b == 0 or l<6:
-    	    return False
-    	return True
-    	        
->>>>>>> d97c0b017de4abe23500e832a29542be8e27eafd
+            
+            
+    def check_password2(password):
+        password = str(password)
+        l=len(password)
+        c=0
+        b=0
+        print(password)
+        for el in password:
+            if el.isdigit():
+                c+=1
+                print(2)
+            if el.istitle():
+                b+=1
+                print(1)
+        if c == 0 or b == 0 or l<6:
+            return False
+        return True
             
     def validate_password(self, password):
         """the function of checking for a match of the password"""
         #user = User.query.filter_by(password=password.data).first()
-        if check_password2(str(password)) is False:
+        if check_password2(password) is False:
             print(233)
             raise ValidationError('Please choose correct password. Your password must contain 6 charecters of which one is a number and one is an uppercase letter.')
-
-
-#def check_password2(password):
-#        l=len(password)
-#        c=0
-#        d=0
-#        for el in password:
-#            if el.isdigit:
-#                c+=1
-#            if el.isupper:
-#                b+=1
-#        if c == 0 and b == 0 or l<6:
-#            return False
-#        return True
 
 class ResetPasswordRequestForm(FlaskForm):
     """the form allows you to reset the password from an existing account"""
