@@ -30,10 +30,16 @@ def check_password2(password):
     return True
 
 class RegistrationForm(FlaskForm):
+    def validate_password(self, password):
+        """the function of checking for a match of the password"""
+        #user = User.query.filter_by(password=password.data).first()
+        if check_password2(password) is False:
+            print(233)
+            raise ValidationError('Please choose correct password. Your password must contain 6 charecters of which one is a number and one is an uppercase letter.')
     """form for registering a new user"""
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired(),Length(min=6,message='Password should be at least 6 characters long')])
+    password = PasswordField('Password', validators=[DataRequired(),Length(min=6,message='Password should be at least 6 characters long'),validate_password()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(),
                                            EqualTo('password')])
@@ -69,12 +75,7 @@ class RegistrationForm(FlaskForm):
             return False
         return True
             
-    def validate_password(self, password):
-        """the function of checking for a match of the password"""
-        #user = User.query.filter_by(password=password.data).first()
-        if check_password2(password) is False:
-            print(233)
-            raise ValidationError('Please choose correct password. Your password must contain 6 charecters of which one is a number and one is an uppercase letter.')
+    
 
 class ResetPasswordRequestForm(FlaskForm):
     """the form allows you to reset the password from an existing account"""
